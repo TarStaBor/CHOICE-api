@@ -1,0 +1,41 @@
+{
+  "name": "choice-api",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "npx eslint .",
+    "DB": "mongod"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TarStaBor/CHOICE-api.git"
+  },
+  "author": "TarStaBor",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/TarStaBor/CHOICE-api/issues"
+  },
+  "homepage": "https://github.com/TarStaBor/CHOICE-api#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "body-parser": "^1.19.2",
+    "celebrate": "^15.0.1",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3",
+    "express-rate-limit": "^6.3.0",
+    "express-winston": "^4.2.0",
+    "helmet": "^5.0.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^6.2.8",
+    "validator": "^13.7.0",
+    "winston": "^3.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
+}
