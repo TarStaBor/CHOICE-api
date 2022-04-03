@@ -14,7 +14,6 @@ const getJobs = (req, res, next) => {
 const createJob = (req, res, next) => {
   const { position, logo, applicants, note, company, level, jobId, tag } =
     req.body;
-
   Job.create({
     position,
     logo,
@@ -54,8 +53,24 @@ const deleteJob = (req, res, next) => {
     });
 };
 
+// загружает изображение
+// const uploadLogo = (req, res, next) => {
+//   try {
+//     if (req.file) {
+//       res.json(req.file);
+//     }
+//   } catch (err) {
+//     if (err.name === "CastError") {
+//       next(new BadRequestError(errorMessages.BadRequestUser));
+//     } else {
+//       next(err);
+//     }
+//   }
+// };
+
 module.exports = {
   getJobs,
   createJob,
   deleteJob,
+  // uploadLogo,
 };

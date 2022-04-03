@@ -3,7 +3,7 @@ const errorMessages = {
   NotFoundError: "Фильм не найден",
   SuccessDelete: "Фильм удален",
   ForbiddenError: "Запрещено удалять фильмы чужих пользователей",
-  BadRequestUser: "Ошибка: Передан невалидный id",
+  BadRequestUser: "Ошибка: Передан невалидный id загрузка лого",
   NotFoundUser: "Пользователь не найден",
   BadEmailOrName: "Ошибка: Переданы некорректные данные при обновлении профиля",
   DuplicateEmail: "Ошибка: Пользователь с такой почтой уже зарегистрирован",
