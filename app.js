@@ -1,4 +1,4 @@
-// require("dotenv").config({ path: "ENV_FILENAME" });
+require("dotenv").config({ path: "ENV_FILENAME" });
 const express = require("express"); //1
 const fileUpload = require("express-fileupload"); //2
 const cors = require("cors"); //3
@@ -25,7 +25,7 @@ app.use(cors()); //если дубль - удалить
 const { dbSrc, NODE_ENV } = process.env;
 
 // app.use(helmet());
-// app.use(express.json({ extended: true })); все запросы в формате json
+// app.use(express.json({ extended: true })); // все запросы в формате json
 const path = require("path"); //для статики
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
@@ -34,26 +34,27 @@ app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
+
 app.use(bodyParser.urlencoded({ extended: true }));
 
 mongoose.connect(NODE_ENV === "production" ? dbSrc : devConfig.dbDev, {
   useNewUrlParser: true,
 });
 
-// const options = {
-//   origin: "http://localhost:3005",
-//   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-//   preflightContinue: false,
-//   optionsSuccessStatus: 204,
-//   allowedHeaders: [
-//     "Content-Type",
-//     "origin",
-//     "Authorization",
-//     "multipart/form-data",
-//   ],
-//   credentials: true,
-// };
-// app.use("*", cors(options));
+const options = {
+  origin: "http://localhost:3005",
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: [
+    "Content-Type",
+    "origin",
+    "Authorization",
+    "multipart/form-data",
+  ],
+  credentials: true,
+};
+app.use("*", cors(options));
 
 // логгер запросов
 app.use(requestLogger);

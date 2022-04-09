@@ -10,24 +10,33 @@ const getJobs = (req, res, next) => {
     .catch(next);
 };
 
-// создаёт вакансию
+// создать
 const createJob = (req, res, next) => {
-  const { position, logo, applicants, note, company, level, jobId, tag } =
-    req.body;
+  console.log(req.body);
+  console.log(req.files);
+  const { company, position, level, tag, note, todo, why } = req.body;
+  const applicants = 0;
+  let logoPath = req.files.logo;
+  logoPath.mv("./uploads/" + logoPath.name);
+  let logo = "localhost:3000/uploads/" + logoPath.name;
+
+  console.log(tag);
   Job.create({
-    position,
-    logo,
-    applicants,
-    note,
     company,
+    position,
     level,
-    jobId,
     tag,
+    logo,
+    note,
+    todo,
+    why,
+    applicants,
   })
     .then((job) => res.send(job))
     .catch((err) => {
       if (err.name === "ValidationError") {
-        next(new BadRequestError(errorMessages.BadRequestError));
+        // next(new BadRequestError(errorMessages.BadRequestError));
+        next(new BadRequestError(err));
       } else {
         next(err);
       }

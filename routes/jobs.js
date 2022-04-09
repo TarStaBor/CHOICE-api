@@ -1,4 +1,5 @@
 const router = require("express").Router();
+// const fileMiddleware = require("../middlewares/multer");
 // const { createMovieValidate, getMoviesValidate } = require('../middlewares/validation');
 
 const { getJobs, createJob, deleteJob } = require("../controllers/jobs");
