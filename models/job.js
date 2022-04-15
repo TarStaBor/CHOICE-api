@@ -52,11 +52,6 @@ const jobSchema = new mongoose.Schema(
       type: Number,
     },
 
-    // // Id вакансии
-    // jobId: {
-    //   type: Number,
-    //   required: true,
-    // },
   },
   { versionKey: false }
 );

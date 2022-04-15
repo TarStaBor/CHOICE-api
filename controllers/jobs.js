@@ -1,7 +1,11 @@
 const Job = require("../models/job");
+
+const { deleteApplicants } = require("../controllers/applicants");
+
 const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const errorMessages = require("../utils/error-messages");
+const fs = require("fs");
 
 // возвращает все вакансии
 const getJobs = (req, res, next) => {
@@ -10,12 +14,19 @@ const getJobs = (req, res, next) => {
     .catch(next);
 };
 
+// возвращает вакансию по Id
+const getJobById = (req, res, next) => {
+  console.log(req.params.id);
+  Job.findById(req.params.id)
+    .then((job) => res.send(job))
+    .catch(next);
+};
+
 // создать
 const createJob = (req, res, next) => {
   console.log(req.body);
   console.log(req.files);
   const { company, position, level, tag, note, todo, why } = req.body;
-  const applicants = 0;
   let logoPath = req.files.logo;
   logoPath.mv("./uploads/" + logoPath.name);
   let logo = "localhost:3000/uploads/" + logoPath.name;
@@ -30,7 +41,6 @@ const createJob = (req, res, next) => {
     note,
     todo,
     why,
-    applicants,
   })
     .then((job) => res.send(job))
     .catch((err) => {
@@ -47,8 +57,13 @@ const createJob = (req, res, next) => {
 const deleteJob = (req, res, next) => {
   const { id } = req.params;
   Job.findById(id)
-    .orFail(new NotFoundError(errorMessages.NotFoundError))
+    // .orFail(new NotFoundError(errorMessages.NotFoundError))
     .then((job) => {
+      console.log(job.company);
+      deleteApplicants(id, job.company);
+      const path = `./resumes/${job.company}/${id}`;
+      // удаляем папку, содержащуюю документы по откликам на вакансию
+      fs.rmdirSync(path, { recursive: true });
       return job
         .remove()
         .then(res.send({ message: errorMessages.SuccessDelete }));
@@ -79,7 +94,7 @@ const deleteJob = (req, res, next) => {
 
 module.exports = {
   getJobs,
+  getJobById,
   createJob,
   deleteJob,
-  // uploadLogo,
 };
