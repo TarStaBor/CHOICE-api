@@ -28,6 +28,7 @@ const { dbSrc, NODE_ENV } = process.env;
 // app.use(express.json({ extended: true })); // все запросы в формате json
 const path = require("path"); //для статики
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/resumes", express.static(path.join(__dirname, "resumes")));
 
 // app.use(express.static("uploads"));
 // enable files upload

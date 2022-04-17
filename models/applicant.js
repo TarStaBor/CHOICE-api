@@ -21,6 +21,11 @@ const applicantSchema = new mongoose.Schema(
     comment: {
       type: String,
     },
+    // Компания, по которой был отклик
+    company: {
+      type: String,
+      required: true,
+    },
     // Вакансия, по которой отклик
     job: {
       type: mongoose.Schema.Types.ObjectId,

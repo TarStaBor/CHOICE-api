@@ -4,7 +4,7 @@ const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const errorMessages = require("../utils/error-messages");
 
-// возвращает все вакансии
+// возвращает все отклики
 const getApplicants = (req, res, next) => {
   Applicant.find()
     .then((jobs) => res.send(jobs))
@@ -16,15 +16,19 @@ const createApplicant = (req, res, next) => {
   console.log(req.body);
   console.log(req.files);
   const { date, link, company, jobId } = req.body;
+  console.log(company + " company");
   let resumePath = req.files.resume;
   resumePath.mv(`./resumes/${company}/${jobId}/${resumePath.name}`);
-  let resume = "localhost:3000/resume/" + resumePath.name;
+  let resume = `localhost:3000/resumes/${company}/${jobId}/${resumePath.name}`;
+  const comment = "";
 
   Applicant.create({
     date,
     link,
     resume,
     job: jobId,
+    comment: comment,
+    company: company,
   })
     .then((data) => {
       res.send(data);
