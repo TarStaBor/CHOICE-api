@@ -7,6 +7,8 @@ const {
   createApplicant,
   // deleteApplicants,
   getCountOfApplicants,
+  deleteApplicantById,
+  patchApplicantComment,
 } = require("../controllers/applicants");
 
 // возвращает все сохранённые пользователем фильмы
@@ -17,6 +19,12 @@ router.get("/:id", getCountOfApplicants);
 
 // создаёт фильм с переданными в теле данными
 router.post("/", createApplicant);
+
+// возвращает отклик по id
+router.delete("/:id", deleteApplicantById);
+
+// возвращает отклик по id
+router.patch("/:id", patchApplicantComment);
 
 // // удаляет сохранённый фильм по id
 // router.delete("/:id", deleteApplicants);

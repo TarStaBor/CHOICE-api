@@ -1,7 +1,8 @@
 const errorMessages = {
-  BadRequestError: "Ошибка: Переданы некорректные данные при добавлении фильма",
+  BadRequestError: "Ошибка: Отклик не отправлен. Попробуйте позже",
   NotFoundError: "Фильм не найден",
   SuccessDelete: "Фильм удален",
+  SuccessCommentUpdate: "Комментарий успешно обновлен",
   ForbiddenError: "Запрещено удалять фильмы чужих пользователей",
   BadRequestUser: "Ошибка: Передан невалидный id загрузка лого",
   NotFoundUser: "Пользователь не найден",

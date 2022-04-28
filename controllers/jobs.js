@@ -26,23 +26,31 @@ const getJobById = (req, res, next) => {
 const createJob = (req, res, next) => {
   console.log(req.body);
   console.log(req.files);
-  const { company, position, level, tag, note, todo, why } = req.body;
+  const { company, position, level, tags, note, todo, why } = req.body;
   let logoPath = req.files.logo;
   logoPath.mv("./uploads/" + logoPath.name);
   let logo = "localhost:3000/uploads/" + logoPath.name;
 
-  console.log(tag);
+  console.log(tags);
   Job.create({
     company,
     position,
     level,
-    tag,
+    tags,
     logo,
     note,
     todo,
     why,
   })
-    .then((job) => res.send(job))
+    .then((job) => {
+      console.log(job._id);
+      fs.mkdirSync(
+        `./resumes/${job.company}/${job._id}`,
+        { recursive: true },
+        (err) => {}
+      );
+      res.send(job);
+    })
     .catch((err) => {
       if (err.name === "ValidationError") {
         // next(new BadRequestError(errorMessages.BadRequestError));
@@ -59,9 +67,9 @@ const deleteJob = (req, res, next) => {
   Job.findById(id)
     // .orFail(new NotFoundError(errorMessages.NotFoundError))
     .then((job) => {
-      console.log(job.company);
+      console.log(`./resumes/${job.company}/${id}`);
       deleteApplicants(id, job.company);
-      const path = `./resumes/${job.company}/${id}`;
+      const path = `./resumes/${job.company}`;
       // удаляем папку, содержащуюю документы по откликам на вакансию
       fs.rmdirSync(path, { recursive: true });
       return job

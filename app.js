@@ -23,15 +23,12 @@ app.use(
 );
 app.use(cors()); //если дубль - удалить
 const { dbSrc, NODE_ENV } = process.env;
+const { PORT = 3000 } = process.env; //const port = process.env.PORT || 3000;
 
 // app.use(helmet());
-// app.use(express.json({ extended: true })); // все запросы в формате json
 const path = require("path"); //для статики
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 app.use("/resumes", express.static(path.join(__dirname, "resumes")));
-
-// app.use(express.static("uploads"));
-// enable files upload
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());
@@ -43,7 +40,12 @@ mongoose.connect(NODE_ENV === "production" ? dbSrc : devConfig.dbDev, {
 });
 
 const options = {
-  origin: "http://localhost:3005",
+  origin: [
+    "http://localhost:3005",
+    "http://film-explorer.nomoredomains.rocks", //есть
+    "https://film-explorer.nomoredomains.rocks", //есть
+    // 'https://YOUR.github.io', //есть
+  ],
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
   preflightContinue: false,
   optionsSuccessStatus: 204,
@@ -75,7 +77,7 @@ app.use(errors());
 
 // обработчик ошибок
 app.use(errorsMiddleware);
-const { PORT = 3000 } = process.env; //const port = process.env.PORT || 3000;
+
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);

@@ -20,7 +20,7 @@ const jobSchema = new mongoose.Schema(
       required: true,
     },
     // Тэг вакансии
-    tag: {
+    tags: {
       type: [String],
       required: true,
     },
@@ -51,7 +51,6 @@ const jobSchema = new mongoose.Schema(
     applicants: {
       type: Number,
     },
-
   },
   { versionKey: false }
 );
