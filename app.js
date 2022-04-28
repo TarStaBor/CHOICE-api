@@ -27,7 +27,7 @@ const { PORT = 3000 } = process.env; //const port = process.env.PORT || 3000;
 
 // app.use(helmet());
 const path = require("path"); //для статики
-app.use("/uploads", express.static(path.join(__dirname, "uploads")));
+app.use("/companyLogos", express.static(path.join(__dirname, "companyLogos")));
 app.use("/resumes", express.static(path.join(__dirname, "resumes")));
 
 app.use(morgan("dev"));

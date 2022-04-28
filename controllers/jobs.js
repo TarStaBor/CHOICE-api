@@ -28,8 +28,8 @@ const createJob = (req, res, next) => {
   console.log(req.files);
   const { company, position, level, tags, note, todo, why } = req.body;
   let logoPath = req.files.logo;
-  logoPath.mv("./uploads/" + logoPath.name);
-  let logo = "localhost:3000/uploads/" + logoPath.name;
+  logoPath.mv("./companyLogos/" + logoPath.name);
+  let logo = "localhost:3000/companyLogos/" + logoPath.name;
 
   console.log(tags);
   Job.create({
