@@ -4,7 +4,6 @@ const router = require("express").Router();
 
 const {
   getApplicants,
-  createApplicant,
   // deleteApplicants,
   getCountOfApplicants,
   deleteApplicantById,
@@ -16,9 +15,6 @@ router.get("/", getApplicants);
 
 // возвращает отклик по id
 router.get("/:id", getCountOfApplicants);
-
-// создаёт фильм с переданными в теле данными
-router.post("/", createApplicant);
 
 // возвращает отклик по id
 router.delete("/:id", deleteApplicantById);

@@ -11,46 +11,6 @@ const getApplicants = (req, res, next) => {
     .catch(next);
 };
 
-// создать отклик
-const createApplicant = (req, res, next) => {
-  const { date, link, company, jobId } = req.body;
-  let resume = "";
-  if (req.files) {
-    resume = req.files.resume.name;
-  }
-
-  const comment = "";
-
-  Applicant.create({
-    date,
-    link,
-    resume: resume,
-    job: jobId,
-    comment: comment,
-    company: company,
-  })
-    .then((data) => {
-      console.log(`./resumes/${company}/${jobId}/${data._id}/${data.resume}`);
-      if (data.resume) {
-        req.files.resume.mv(
-          `./resumes/${company}/${jobId}/${data._id}/${data.resume}`
-        );
-      }
-      res.send({
-        title: "Спасибо!",
-        subTitle: "Мы получили ваш отклик",
-      });
-    })
-    .catch((err) => {
-      if (err.name === "ValidationError") {
-        // next(new BadRequestError(errorMessages.BadRequestError));
-        next(new BadRequestError(err));
-      } else {
-        next(err);
-      }
-    });
-};
-
 // Получить количество откликов
 const getCountOfApplicants = (req, res, next) => {
   const { id } = req.params;
@@ -166,7 +126,6 @@ const patchApplicantComment = (req, res, next) => {
 
 module.exports = {
   getApplicants,
-  createApplicant,
   deleteApplicants,
   deleteApplicantById,
   getCountOfApplicants,

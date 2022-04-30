@@ -8,30 +8,29 @@ const UnauthorizedError = require("../errors/unauthorized-err");
 const errorMessages = require("../utils/error-messages");
 const devConfig = require("../utils/devConfig");
 
-// // создание пользователя
-// const createUser = (req, res, next) => {
-//   const {
-//     name,
-//     email,
-//   } = req.body;
-//   bcrypt
-//     .hash(req.body.password, 10)
-//     .then((hash) => User.create({
-//       name,
-//       email,
-//       password: hash,
-//     }))
-//     .then(() => res.send({ email, name }))
-//     .catch((err) => {
-//       if (err.name === 'ValidationError') {
-//         next(new BadRequestError(errorMessages.BadEmailOrName));
-//       } else if (err.code === 11000) {
-//         next(new ConflictError(errorMessages.DuplicateEmail));
-//       } else {
-//         next(err);
-//       }
-//     });
-// };
+// создание пользователя
+const createUser = (req, res, next) => {
+  const { name, email } = req.body;
+  bcrypt
+    .hash(req.body.password, 10)
+    .then((hash) =>
+      User.create({
+        name,
+        email,
+        password: hash,
+      })
+    )
+    .then(() => res.send({ email, name }))
+    .catch((err) => {
+      if (err.name === "ValidationError") {
+        next(new BadRequestError(errorMessages.BadEmailOrName));
+      } else if (err.code === 11000) {
+        next(new ConflictError(errorMessages.DuplicateEmail));
+      } else {
+        next(err);
+      }
+    });
+};
 
 // вход
 const login = (req, res, next) => {
@@ -51,21 +50,21 @@ const login = (req, res, next) => {
     });
 };
 
-// // возвращает информацию о пользователе (email и имя)
-// const getUserMe = (req, res, next) => {
-//   User.findById(req.user._id)
-//     .then((user) => {
-//       res.send({ email: user.email, name: user.name });
-//     })
-//     .catch(next);
-// };
+// возвращает информацию о пользователе (email и имя)
+const getUserMe = (req, res, next) => {
+  User.findById(req.user._id)
+    .then((user) => {
+      res.send({ email: user.email, name: user.name });
+    })
+    .catch(next);
+};
 
 // // обновление профиля
 // const patchUser = (req, res, next) => {
 //   User.findByIdAndUpdate(
 //     req.user._id,
 //     { name: req.body.name, email: req.body.email },
-//     { new: true, runValidators: true },
+//     { new: true, runValidators: true }
 //   )
 //     .then((user) => {
 //       if (user) {
@@ -74,7 +73,7 @@ const login = (req, res, next) => {
 //       throw new NotFoundError(errorMessages.NotFoundUser);
 //     })
 //     .catch((err) => {
-//       if (err.name === 'ValidationError') {
+//       if (err.name === "ValidationError") {
 //         next(new BadRequestError(errorMessages.BadEmailOrName));
 //       } else if (err.code === 11000) {
 //         next(new ConflictError(errorMessages.DuplicateEmail));
@@ -85,8 +84,8 @@ const login = (req, res, next) => {
 // };
 
 module.exports = {
-  // getUserMe,
+  getUserMe,
   // patchUser,
-  // createUser,
+  createUser,
   login,
 };
