@@ -4,10 +4,13 @@ const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const errorMessages = require("../utils/error-messages");
 const fs = require("fs");
+
 // возвращает все отклики
 const getApplicants = (req, res, next) => {
-  Applicant.find()
-    .then((jobs) => res.send(jobs))
+  Applicant.find({})
+    // в .job будет хранится название компании, по которой был отклик на случай если в верстке надо будет отобразить название компании
+    .populate("job", "company")
+    .then((applicants) => res.send(applicants))
     .catch(next);
 };
 
@@ -42,15 +45,17 @@ const deleteApplicants = (req, res, next) => {
     });
 };
 
-// удаляет вакансию по id
+// удаляет отклик по id
 const deleteApplicantById = (req, res, next) => {
   const { id } = req.params;
   Applicant.findById(id)
     // .orFail(new NotFoundError(errorMessages.NotFoundError))
+    .populate("job", "company")
     .then((applicant) => {
       if (applicant.resume) {
         // удаляем папку, содержащуюю документы по откликам на вакансию
-        const path = `./public/resumes/${applicant.company}/${applicant.job}/${id}`;
+        const path = `./public/resumes/${applicant.job.company}/${applicant.job._id}/${id}`;
+        console.log(path);
         fs.rmdirSync(path, { recursive: true });
       }
       return applicant
@@ -70,7 +75,13 @@ const deleteApplicantById = (req, res, next) => {
 const patchApplicantComment = (req, res, next) => {
   const { id } = req.params;
   const { comment } = req.body;
-  Applicant.findByIdAndUpdate(id, { comment: comment })
+  Applicant.findByIdAndUpdate(
+    id,
+    { comment: comment },
+    {
+      new: true, // обработчик then получит на вход обновлённую запись
+    }
+  )
     // .orFail(new NotFoundError(errorMessages.NotFoundError))
 
     .then(() => {

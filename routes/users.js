@@ -1,3 +1,4 @@
+// router создаёт объект, на который мы повесим обработчики
 const router = require("express").Router();
 const { getUserMe } = require("../controllers/users");
 // const { patchUserValidate } = require("../middlewares/validation");

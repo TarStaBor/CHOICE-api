@@ -1,3 +1,4 @@
+// router создаёт объект, на который мы повесим обработчики
 const router = require("express").Router();
 const { login, createUser } = require("../controllers/users");
 const usersRouter = require("./users");

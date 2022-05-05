@@ -17,14 +17,17 @@ const jobSchema = new mongoose.Schema(
     // Необходимый уровень кандидата
     level: {
       type: String,
+      enum: ["intern", "junior", "middle", "senior", "lead", "lead"],
       required: true,
     },
-    // Тэг вакансии
-    tags: {
-      type: [String],
-      required: true,
-    },
-    // логотип (бывш image)
+    // Тэги вакансии
+    tags: [
+      {
+        type: String,
+        required: true,
+      },
+    ],
+    // логотип
     logo: {
       type: String,
       required: true,

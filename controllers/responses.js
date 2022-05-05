@@ -21,9 +21,10 @@ const createApplicant = (req, res, next) => {
     resume: resume,
     job: jobId,
     comment: comment,
-    company: company,
+    // company: company,
   })
     .then((data) => {
+      console.log();
       if (data.resume) {
         req.files.resume.mv(
           `./public/resumes/${company}/${jobId}/${data._id}/${data.resume}`

@@ -9,7 +9,7 @@ const fs = require("fs");
 
 // возвращает все вакансии
 const getJobs = (req, res, next) => {
-  Job.find()
+  Job.find({})
     .then((jobs) => res.send(jobs))
     .catch(next);
 };
