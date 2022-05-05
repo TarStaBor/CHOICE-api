@@ -1,5 +1,8 @@
 require("dotenv").config({ path: "ENV_FILENAME" });
-const express = require("express"); //1
+
+// При получении запроса на бэкенде выполняются стандартные операции: определяется тип этого запроса, извлекаются параметры и тело. Затем вызывается функция-обработчик, которая соответствует запросу, и результат её выполнения возвращается клиенту. Это задачи, с которыми разработчик сталкивается регулярно, поэтому для их решения применяют специальный веб-фреймворк — Express.
+const express = require("express");
+
 const fileUpload = require("express-fileupload"); //2
 const cors = require("cors"); //3
 
@@ -22,13 +25,19 @@ app.use(
   })
 );
 app.use(cors()); //если дубль - удалить
+
+// ХЗ что тут. Тема "Переменные окружения"
 const { dbSrc, NODE_ENV } = process.env;
-const { PORT = 3000 } = process.env; //const port = process.env.PORT || 3000;
+const { PORT = 3000 } = process.env;
+//const port = process.env.PORT || 3000;
 
 // app.use(helmet());
 const path = require("path"); //для статики
-app.use("/companyLogos", express.static(path.join(__dirname, "companyLogos")));
-app.use("/resumes", express.static(path.join(__dirname, "resumes")));
+app.use(
+  "/companyLogos",
+  express.static(path.join(__dirname, "/public/companyLogos"))
+);
+app.use("/resumes", express.static(path.join(__dirname, "/public/resumes")));
 
 app.use(morgan("dev"));
 app.use(bodyParser.json());

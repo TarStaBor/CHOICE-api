@@ -17,7 +17,6 @@ const upload = multer({
     if (file.mimetype == "image/png" || file.mimetype == "image/jpg") {
       callback(null, true);
     } else {
-      console.log("only jpg & png");
       callback(null, false);
     }
   },

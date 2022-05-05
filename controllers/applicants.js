@@ -48,10 +48,9 @@ const deleteApplicantById = (req, res, next) => {
   Applicant.findById(id)
     // .orFail(new NotFoundError(errorMessages.NotFoundError))
     .then((applicant) => {
-      console.log(applicant);
       if (applicant.resume) {
         // удаляем папку, содержащуюю документы по откликам на вакансию
-        const path = `./resumes/${applicant.company}/${applicant.job}/${id}`;
+        const path = `./public/resumes/${applicant.company}/${applicant.job}/${id}`;
         fs.rmdirSync(path, { recursive: true });
       }
       return applicant

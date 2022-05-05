@@ -24,10 +24,9 @@ const createApplicant = (req, res, next) => {
     company: company,
   })
     .then((data) => {
-      console.log(`./resumes/${company}/${jobId}/${data._id}/${data.resume}`);
       if (data.resume) {
         req.files.resume.mv(
-          `./resumes/${company}/${jobId}/${data._id}/${data.resume}`
+          `./public/resumes/${company}/${jobId}/${data._id}/${data.resume}`
         );
       }
       res.send({
@@ -36,7 +35,6 @@ const createApplicant = (req, res, next) => {
       });
     })
     .catch((err) => {
-      console.log("Тут?");
       if (err.name === "ValidationError") {
         // next(new BadRequestError(errorMessages.BadRequestError));
         next(new BadRequestError(err));

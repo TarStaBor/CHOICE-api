@@ -16,22 +16,17 @@ const getJobs = (req, res, next) => {
 
 // возвращает вакансию по Id
 const getJobById = (req, res, next) => {
-  console.log(req.params.id);
   Job.findById(req.params.id)
     .then((job) => res.send(job))
     .catch(next);
 };
 
-// создать
+// создать вакансию
 const createJob = (req, res, next) => {
-  console.log(req.body);
-  console.log(req.files);
   const { company, position, level, tags, note, todo, why } = req.body;
   let logoPath = req.files.logo;
-  logoPath.mv("./companyLogos/" + logoPath.name);
+  logoPath.mv("./public/companyLogos/" + logoPath.name);
   let logo = "localhost:3000/companyLogos/" + logoPath.name;
-
-  console.log(tags);
   Job.create({
     company,
     position,
@@ -43,9 +38,8 @@ const createJob = (req, res, next) => {
     why,
   })
     .then((job) => {
-      console.log(job._id);
       fs.mkdirSync(
-        `./resumes/${job.company}/${job._id}`,
+        `./public/resumes/${job.company}/${job._id}`,
         { recursive: true },
         (err) => {}
       );
@@ -67,9 +61,8 @@ const deleteJob = (req, res, next) => {
   Job.findById(id)
     // .orFail(new NotFoundError(errorMessages.NotFoundError))
     .then((job) => {
-      console.log(`./resumes/${job.company}/${id}`);
       deleteApplicants(id, job.company);
-      const path = `./resumes/${job.company}`;
+      const path = `./public/resumes/${job.company}`;
       // удаляем папку, содержащуюю документы по откликам на вакансию
       fs.rmdirSync(path, { recursive: true });
       return job
