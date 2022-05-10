@@ -1,14 +1,16 @@
+// Модуль для создания токенов
 const jwt = require("jsonwebtoken");
+// Модуль хеширования пароля
 const bcrypt = require("bcrypt");
 const User = require("../models/user");
-const NotFoundError = require("../errors/not-found-err");
+// const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const ConflictError = require("../errors/conflict-err");
 const UnauthorizedError = require("../errors/unauthorized-err");
 const errorMessages = require("../utils/error-messages");
 const devConfig = require("../utils/devConfig");
 
-// создание пользователя
+// Создать пользователя
 const createUser = (req, res, next) => {
   const { name, email } = req.body;
   bcrypt
@@ -32,7 +34,7 @@ const createUser = (req, res, next) => {
     });
 };
 
-// вход
+// Авторизация
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
@@ -50,7 +52,7 @@ const login = (req, res, next) => {
     });
 };
 
-// возвращает информацию о пользователе (email и имя)
+// Вернуть информацию о пользователе (email и имя)
 const getUserMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
@@ -59,7 +61,7 @@ const getUserMe = (req, res, next) => {
     .catch(next);
 };
 
-// // обновление профиля
+// // обновление профиля (Доделать позже)
 // const patchUser = (req, res, next) => {
 //   User.findByIdAndUpdate(
 //     req.user._id,

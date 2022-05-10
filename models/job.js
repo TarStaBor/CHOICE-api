@@ -1,23 +1,27 @@
 const mongoose = require("mongoose");
-const { isURL } = require("validator");
-const errorMessages = require("../utils/error-messages");
+// const { isURL } = require("validator");
+// const errorMessages = require("../utils/error-messages");
 
 const jobSchema = new mongoose.Schema(
   {
     // Название компании работодателя
     company: {
       type: String,
+      minlength: 2,
+      maxlength: 30,
       required: true,
     },
     // Должность
     position: {
       type: String,
+      minlength: 2,
+      maxlength: 30,
       required: true,
     },
     // Необходимый уровень кандидата
     level: {
       type: String,
-      enum: ["intern", "junior", "middle", "senior", "lead", "lead"],
+      enum: ["intern", "junior", "middle", "senior", "lead", "director"],
       required: true,
     },
     // Тэги вакансии
@@ -35,24 +39,31 @@ const jobSchema = new mongoose.Schema(
     // Комментарий
     note: {
       type: String,
+      minlength: 2,
+      maxlength: 60,
       required: true,
     },
 
     // Что делать
     todo: {
       type: String,
+      minlength: 2,
+      maxlength: 500,
       required: true,
     },
 
     // Почему
     why: {
       type: String,
+      minlength: 2,
+      maxlength: 500,
       required: true,
     },
 
     // Количество откликов
     applicants: {
       type: Number,
+      default: 0,
     },
   },
   { versionKey: false }

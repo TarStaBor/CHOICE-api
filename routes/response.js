@@ -3,14 +3,12 @@ const router = require("express").Router();
 // const fileMiddleware = require("../middlewares/multer");
 // const { createMovieValidate, getMoviesValidate } = require('../middlewares/validation');
 
-const { getJobById } = require("../controllers/jobs");
+const { getJobById, createApplicant } = require("../controllers/responses");
 
-const { createApplicant } = require("../controllers/responses");
-
-// возвращает вакансию по id
+// Вернуть вакансию по id
 router.get("/:id", getJobById);
 
-// создаёт фильм с переданными в теле данными
+// Создать отклик
 router.post("/", createApplicant);
 
 module.exports = router;

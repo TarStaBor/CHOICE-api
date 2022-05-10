@@ -5,25 +5,21 @@ const router = require("express").Router();
 
 const {
   getApplicants,
-  // deleteApplicants,
-  getCountOfApplicants,
+  getApplicantsByJobId,
   deleteApplicantById,
   patchApplicantComment,
 } = require("../controllers/applicants");
 
-// возвращает все сохранённые пользователем фильмы
+// вернуть все отклики
 router.get("/", getApplicants);
 
-// возвращает отклик по id
-router.get("/:id", getCountOfApplicants);
+// вернуть количество откликов по вакансии (Доделать)
+router.get("/:id", getApplicantsByJobId);
 
-// возвращает отклик по id
+// удалить отклик по ID
 router.delete("/:id", deleteApplicantById);
 
-// возвращает отклик по id
+// изменить комментарий отклика
 router.patch("/:id", patchApplicantComment);
-
-// // удаляет сохранённый фильм по id
-// router.delete("/:id", deleteApplicants);
 
 module.exports = router;

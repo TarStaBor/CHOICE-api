@@ -5,8 +5,7 @@ npm-debug.log*
 
 # Dependency directory
 node_modules
-companyLogos
-resumes
+public
 
 # Optional npm cache directory
 .npm

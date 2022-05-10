@@ -1,7 +1,7 @@
-const mongoose = require('mongoose');
-const isEmail = require('validator/lib/isEmail');
-const bcrypt = require('bcrypt');
-const errorMessages = require('../utils/error-messages');
+const mongoose = require("mongoose");
+const isEmail = require("validator/lib/isEmail");
+const bcrypt = require("bcrypt");
+const errorMessages = require("../utils/error-messages");
 
 const userSchema = new mongoose.Schema(
   {
@@ -27,27 +27,30 @@ const userSchema = new mongoose.Schema(
       type: String,
       minlength: 2,
       maxlength: 30,
-      default: 'Новый пользователь',
+      default: "Новый пользователь",
     },
   },
-  { versionKey: false },
+  { versionKey: false }
 );
 
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
-  return this.findOne({ email }).select('+password')
+  // попытаемся найти пользователя по почте
+  // this — это модель User
+  return this.findOne({ email })
+    .select("+password")
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error(errorMessages.BadEmailOrPassword));
       }
-      return bcrypt.compare(password, user.password)
-        .then((matched) => {
-          if (!matched) {
-            return Promise.reject(new Error(errorMessages.BadEmailOrPassword));
-          }
-          return user;
-        });
+      // сравниваем хеши
+      return bcrypt.compare(password, user.password).then((matched) => {
+        if (!matched) {
+          return Promise.reject(new Error(errorMessages.BadEmailOrPassword));
+        }
+        return user;
+      });
     });
 };
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

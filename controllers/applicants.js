@@ -1,143 +1,107 @@
+const fs = require("fs");
 const Applicant = require("../models/applicant");
-// const Job = require("../models/job");
+const Job = require("../models/job");
 const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const errorMessages = require("../utils/error-messages");
-const fs = require("fs");
 
-// возвращает все отклики
+// Вернуть все отклики
 const getApplicants = (req, res, next) => {
   Applicant.find({})
-    // в .job будет хранится название компании, по которой был отклик на случай если в верстке надо будет отобразить название компании
+    // в .job будет хранится название компании, по которой был отклик
+    // на случай если в верстке надо будет отобразить название компании
     .populate("job", "company")
-    .then((applicants) => res.send(applicants))
+    .then((applicants) => {
+      res.send(applicants);
+    })
     .catch(next);
 };
 
-// Получить количество откликов
-const getCountOfApplicants = (req, res, next) => {
+// Получить отклики по Id вакансии
+const getApplicantsByJobId = (req, res, next) => {
   const { id } = req.params;
   Applicant.find({ job: id })
-    .orFail(new NotFoundError(errorMessages.NotFoundError))
+    .populate("job", "company")
+    .orFail(new NotFoundError(errorMessages.NotFoundJobError))
     .then((applicants) => {
-      // count = `${applicants.length}`;
       res.send(applicants);
     })
     .catch((err) => {
-      console.log(err);
       if (err.name === "CastError") {
-        next(new BadRequestError(errorMessages.BadRequestUser));
+        next(new BadRequestError(errorMessages.BadRequestJobId));
       } else {
         next(err);
       }
     });
 };
 
-// удаляет отклики по id вакансии
-const deleteApplicants = (req, res, next) => {
-  const id = req;
-  Applicant.deleteMany({ job: id })
-    .then((res) => {
-      console.log(res + " все хорошо");
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
-
-// удаляет отклик по id
+// Удалить отклик по id
 const deleteApplicantById = (req, res, next) => {
   const { id } = req.params;
   Applicant.findById(id)
-    // .orFail(new NotFoundError(errorMessages.NotFoundError))
+    .orFail(new NotFoundError(errorMessages.NotFoundApplicantError))
     .populate("job", "company")
     .then((applicant) => {
       if (applicant.resume) {
-        // удаляем папку, содержащуюю документы по откликам на вакансию
+        // Удалить папку, содержащуюю документы по откликам на вакансию
         const path = `./public/resumes/${applicant.job.company}/${applicant.job._id}/${id}`;
-        console.log(path);
         fs.rmdirSync(path, { recursive: true });
       }
+
+      // Уменьшить счетчик количества откликов
+      Job.findByIdAndUpdate(
+        applicant.job._id,
+        { $inc: { applicants: -1 } },
+        { new: true }
+      )
+        .orFail(new NotFoundError(errorMessages.NotFoundJobError))
+        .then((updateJob) => {
+          console.log(updateJob);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+
       return applicant
         .remove()
-        .then(res.send({ message: errorMessages.SuccessDelete }));
+        .then(res.send({ message: errorMessages.SuccessApplicantDelete }));
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError(errorMessages.BadRequestUser));
+        next(new BadRequestError(errorMessages.BadRequestApplicantId));
       } else {
         next(err);
       }
     });
 };
 
-// Обновляет комментарий к отклику
+// Обновить комментарий к отклику
 const patchApplicantComment = (req, res, next) => {
   const { id } = req.params;
   const { comment } = req.body;
   Applicant.findByIdAndUpdate(
     id,
-    { comment: comment },
+    { comment },
     {
-      new: true, // обработчик then получит на вход обновлённую запись
+      new: true,
     }
   )
-    // .orFail(new NotFoundError(errorMessages.NotFoundError))
-
+    .orFail(new NotFoundError(errorMessages.NotFoundApplicantError))
     .then(() => {
-      res.send(comment);
+      res.send({ comment });
     })
-
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError(errorMessages.BadRequestUser));
+        next(new BadRequestError(errorMessages.BadRequestApplicantId));
       } else {
         next(err);
       }
     });
 };
 
-// .orFail(new NotFoundError(errorMessages.NotFoundError))
-// .then((job) => {
-//   return job
-//     .remove()
-//     .then(res.send({ message: errorMessages.SuccessDelete }));
-// })
-// .catch((err) => {
-//   if (err.name === "CastError") {
-//     next(new BadRequestError(errorMessages.BadRequestUser));
-//   } else {
-//     next(err);
-//   }
-// });
-
-// возвращает вакансию по Id
-// const getJobById = (req, res, next) => {
-//   console.log(req.params.id);
-//   Job.findById(req.params.id)
-//     .then((job) => res.send(job))
-//     .catch(next);
-// };
-
-// загружает изображение
-// const uploadLogo = (req, res, next) => {
-//   try {
-//     if (req.file) {
-//       res.json(req.file);
-//     }
-//   } catch (err) {
-//     if (err.name === "CastError") {
-//       next(new BadRequestError(errorMessages.BadRequestUser));
-//     } else {
-//       next(err);
-//     }
-//   }
-// };
-
 module.exports = {
   getApplicants,
-  deleteApplicants,
   deleteApplicantById,
-  getCountOfApplicants,
+  getApplicantsByJobId,
   patchApplicantComment,
 };

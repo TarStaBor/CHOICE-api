@@ -1,24 +1,32 @@
-// Авторизация
-const jwt = require('jsonwebtoken');
-const UnauthorizedError = require('../errors/unauthorized-err');
-const errorMessages = require('../utils/error-messages');
-const devConfig = require('../utils/devConfig');
+const jwt = require("jsonwebtoken");
+const UnauthorizedError = require("../errors/unauthorized-err");
+const errorMessages = require("../utils/error-messages");
+const devConfig = require("../utils/devConfig");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports = (req, res, next) => {
+  // Достать авторизационный заголовок
   const { authorization } = req.headers;
-  if (!authorization || !authorization.startsWith('Bearer ')) {
+  // Убедиться, что он есть или начинается с Bearer
+  if (!authorization || !authorization.startsWith("Bearer ")) {
     throw new UnauthorizedError(errorMessages.AuthorizationError);
   }
-  const token = authorization.replace('Bearer ', '');
+  // Извлечь токен
+  const token = authorization.replace("Bearer ", "");
   let payload;
 
+  // После извлечения токена из запроса убедиться,
+  // что пользователь прислал именно тот токен, который был выдан ему ранее
   try {
-    payload = jwt.verify(token, NODE_ENV === 'production' ? JWT_SECRET : devConfig.JWT_SECRET_DEV);
+    payload = jwt.verify(
+      token,
+      NODE_ENV === "production" ? JWT_SECRET : devConfig.JWT_SECRET_DEV
+    );
   } catch (e) {
     throw new UnauthorizedError(errorMessages.AuthorizationError);
   }
+  // Записать пейлоуд в объект запроса
   req.user = payload;
-
+  // Пропустить запрос дальше
   return next();
 };

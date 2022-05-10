@@ -10,6 +10,7 @@
       }
     ],
     "linebreak-style": "off",
-    "no-console": 0
+    "no-console": 0,
+    "quotes": [2, "double", { "avoidEscape": true }]
   }
 }

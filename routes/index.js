@@ -12,25 +12,37 @@ const {
   loginValidate,
 } = require("../middlewares/validation");
 
-// регистрация
-router.post("/signup", createUserValidate, createUser);
+// Регистрация
+router.post(
+  "/signup",
+  // createUserValidate,
+  createUser
+);
 
-// авторизация
-router.post("/signin", loginValidate, login);
+// Авторизация
+router.post(
+  "/signin",
+  //  loginValidate,
+  login
+);
 
-// получение отклика
+// Получить отклик
 router.use("/response", response);
 
-router.use(auth);
+// Так как мы добавили auth нужным роутам вторым параметрам,
+// устанавливать router.use(auth) нет необходимости
+// router.use(auth);
 
-// пользователи
-router.use("/users", usersRouter);
+// Пользователи
+router.use("/users", auth, usersRouter);
 
-// вакансии
-router.use("/jobs", jobsRouter);
-router.use("/applicants", applicantsRouter);
+// Вакансии
+router.use("/jobs", auth, jobsRouter);
 
-// отсутствующие роуты
+// Отклики
+router.use("/applicants", auth, applicantsRouter);
+
+// Отсутствующие роуты
 router.use("*", errorsRouter);
 
 module.exports = router;

@@ -1,14 +1,10 @@
 const mongoose = require("mongoose");
-const { isURL } = require("validator");
-const errorMessages = require("../utils/error-messages");
-
+const moment = require("moment/min/moment-with-locales");
+// const { isURL } = require("validator");
+// const errorMessages = require("../utils/error-messages");
+moment.locale("ru");
 const applicantSchema = new mongoose.Schema(
   {
-    // Название отклика
-    date: {
-      type: String,
-      required: true,
-    },
     // Ссылка на резюме
     link: {
       type: String,
@@ -20,6 +16,7 @@ const applicantSchema = new mongoose.Schema(
     // Комментарий об откликнувшемся пользователе
     comment: {
       type: String,
+      default: "",
     },
     // Вакансия, по которой отклик
     job: {
@@ -28,7 +25,11 @@ const applicantSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { versionKey: false }
+  {
+    timestamps: true,
+    versionKey: false,
+  }
+  // { versionKey: false }
 );
 
 module.exports = mongoose.model("applicant", applicantSchema);

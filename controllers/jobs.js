@@ -1,32 +1,23 @@
-const Job = require("../models/job");
-
-const { deleteApplicants } = require("../controllers/applicants");
-
-const NotFoundError = require("../errors/not-found-err");
-const BadRequestError = require("../errors/bad-request-err");
-const errorMessages = require("../utils/error-messages");
 const fs = require("fs");
+const Job = require("../models/job");
+const Applicant = require("../models/applicant");
+const BadRequestError = require("../errors/bad-request-err");
+const NotFoundError = require("../errors/not-found-err");
+const errorMessages = require("../utils/error-messages");
 
-// возвращает все вакансии
+// Вернуть все вакансии
 const getJobs = (req, res, next) => {
   Job.find({})
     .then((jobs) => res.send(jobs))
     .catch(next);
 };
 
-// возвращает вакансию по Id
-const getJobById = (req, res, next) => {
-  Job.findById(req.params.id)
-    .then((job) => res.send(job))
-    .catch(next);
-};
-
-// создать вакансию
+// Создать вакансию
 const createJob = (req, res, next) => {
   const { company, position, level, tags, note, todo, why } = req.body;
-  let logoPath = req.files.logo;
-  logoPath.mv("./public/companyLogos/" + logoPath.name);
-  let logo = "localhost:3000/companyLogos/" + logoPath.name;
+  const logoPath = req.files.logo;
+  logoPath.mv(`./public/companyLogos/${logoPath.name}`);
+  const logo = `localhost:3000/companyLogos/${logoPath.name}`;
   Job.create({
     company,
     position,
@@ -41,61 +32,54 @@ const createJob = (req, res, next) => {
       fs.mkdirSync(
         `./public/resumes/${job.company}/${job._id}`,
         { recursive: true },
-        (err) => {}
+        (err) => {
+          console.log(err);
+        }
       );
       res.send(job);
     })
     .catch((err) => {
       if (err.name === "ValidationError") {
-        // next(new BadRequestError(errorMessages.BadRequestError));
-        next(new BadRequestError(err));
+        next(new BadRequestError(errorMessages.BadAddJobRequestError));
       } else {
         next(err);
       }
     });
 };
 
-// удаляет вакансию по id
+// Удалить вакансию по id
 const deleteJob = (req, res, next) => {
   const { id } = req.params;
   Job.findById(id)
-    // .orFail(new NotFoundError(errorMessages.NotFoundError))
+    .orFail(new NotFoundError(errorMessages.NotFoundJobError))
     .then((job) => {
-      deleteApplicants(id, job.company);
+      // Удалить все отклики по данной вакансии
+      Applicant.deleteMany({ job: id })
+        .orFail(new NotFoundError(errorMessages.NotFoundJobError))
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
       const path = `./public/resumes/${job.company}`;
-      // удаляем папку, содержащуюю документы по откликам на вакансию
+      // Удалить папку, содержащуюю документы по откликам на вакансию
       fs.rmdirSync(path, { recursive: true });
       return job
         .remove()
-        .then(res.send({ message: errorMessages.SuccessDelete }));
+        .then(res.send({ message: errorMessages.SuccessJobDelete }));
     })
     .catch((err) => {
       if (err.name === "CastError") {
-        next(new BadRequestError(errorMessages.BadRequestUser));
+        next(new BadRequestError(errorMessages.BadRequestJobId));
       } else {
         next(err);
       }
     });
 };
 
-// загружает изображение
-// const uploadLogo = (req, res, next) => {
-//   try {
-//     if (req.file) {
-//       res.json(req.file);
-//     }
-//   } catch (err) {
-//     if (err.name === "CastError") {
-//       next(new BadRequestError(errorMessages.BadRequestUser));
-//     } else {
-//       next(err);
-//     }
-//   }
-// };
-
 module.exports = {
   getJobs,
-  getJobById,
   createJob,
   deleteJob,
 };

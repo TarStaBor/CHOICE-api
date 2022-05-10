@@ -1,17 +1,28 @@
 // router создаёт объект, на который мы повесим обработчики
 const router = require("express").Router();
 // const fileMiddleware = require("../middlewares/multer");
-// const { createMovieValidate, getMoviesValidate } = require('../middlewares/validation');
+const {
+  createJobValidate,
+  getJobsValidate,
+} = require("../middlewares/validation");
 
 const { getJobs, createJob, deleteJob } = require("../controllers/jobs");
 
-// возвращает все сохранённые пользователем фильмы
-router.get("/", getJobs);
+// Вернуть все вакансии
+router.get(
+  "/",
+  // getJobsValidate,
+  getJobs
+);
 
-// создаёт фильм с переданными в теле данными
-router.post("/", createJob);
+// Создать вакансию
+router.post(
+  "/",
+  // createJobValidate,
+  createJob
+);
 
-// удаляет сохранённый фильм по id
+// Удалить вакансию по Id
 router.delete("/:id", deleteJob);
 
 module.exports = router;
