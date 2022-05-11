@@ -69,7 +69,7 @@ app.use(
 
 app.use(cors());
 
-// ХЗ что тут. Тема "Переменные окружения"
+// Вытаскиваем из .env
 const { dbSrc, NODE_ENV } = process.env;
 
 const { PORT = 3000 } = process.env;
@@ -156,4 +156,5 @@ app.use(errorsMiddleware);
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
+  console.log(PORT);
 });

@@ -1,7 +1,9 @@
 // Модуль для создания токенов
 const jwt = require("jsonwebtoken");
+
 // Модуль хеширования пароля
 const bcrypt = require("bcrypt");
+
 const User = require("../models/user");
 // const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");

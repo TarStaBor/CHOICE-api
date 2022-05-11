@@ -1,7 +1,7 @@
 // Валидацию с помощью Joi доделать позже
 
 const { celebrate, Joi } = require("celebrate");
-// const regExp = require("../regexp/regexp");
+// const validationRegex = require("../regexp/validationRegex");
 
 // валидация при регистрации
 const createUserValidate = celebrate({
