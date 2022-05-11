@@ -1,3 +1,5 @@
+// Валидацию с помощью Joi доделать позже
+
 const { celebrate, Joi } = require("celebrate");
 // const regExp = require("../regexp/regexp");
 

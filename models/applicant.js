@@ -1,13 +1,16 @@
 const mongoose = require("mongoose");
-const moment = require("moment/min/moment-with-locales");
-// const { isURL } = require("validator");
-// const errorMessages = require("../utils/error-messages");
-moment.locale("ru");
+const { isURL } = require("validator");
+const errorMessages = require("../utils/error-messages");
+
 const applicantSchema = new mongoose.Schema(
   {
     // Ссылка на резюме
     link: {
       type: String,
+      validate: {
+        validator: (v) => isURL(v),
+        message: errorMessages.BadUrl,
+      },
     },
     // Файл резюме
     resume: {
@@ -29,7 +32,6 @@ const applicantSchema = new mongoose.Schema(
     timestamps: true,
     versionKey: false,
   }
-  // { versionKey: false }
 );
 
 module.exports = mongoose.model("applicant", applicantSchema);

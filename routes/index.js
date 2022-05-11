@@ -7,10 +7,12 @@ const applicantsRouter = require("./applicants");
 const response = require("./response");
 const errorsRouter = require("./errors");
 const auth = require("../middlewares/auth");
-const {
-  createUserValidate,
-  loginValidate,
-} = require("../middlewares/validation");
+
+// Валидацию с помощью Joi доделать позже
+// const {
+//   createUserValidate,
+//   loginValidate,
+// } = require("../middlewares/validation");
 
 // Регистрация
 router.post(

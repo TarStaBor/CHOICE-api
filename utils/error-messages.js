@@ -16,6 +16,7 @@ const errorMessages = {
   NotFoundUser: "Ошибка: Пользователь не найден",
   NotFoundPage: "Ошибка: Ресурс не найден!!!",
   ServerError: "Ошибка: На сервере произошла ошибка",
+  BadUrl: "Неправильный формат URL",
   BadEmail: "Ошибка: Неправильный формат почты",
   AuthorizationError: "Ошибка: Необходима авторизация",
 };

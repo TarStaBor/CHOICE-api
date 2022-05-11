@@ -1,10 +1,11 @@
 // router создаёт объект, на который мы повесим обработчики
 const router = require("express").Router();
-// const fileMiddleware = require("../middlewares/multer");
-const {
-  createJobValidate,
-  getJobsValidate,
-} = require("../middlewares/validation");
+
+// Валидацию с помощью Joi доделать позже
+// const {
+//   createJobValidate,
+//   getJobsValidate,
+// } = require("../middlewares/validation");
 
 const { getJobs, createJob, deleteJob } = require("../controllers/jobs");
 
