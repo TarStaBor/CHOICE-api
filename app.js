@@ -59,13 +59,13 @@ const { PORT = 3000 } = process.env;
 // создаем приложение методом express
 const app = express();
 
-app.use(
-  helmet()
-  // {
-  // crossOriginResourcePolicy: false,
-  // crossOriginEmbedderPolicy: false,
-  // }
-);
+// app.use(
+//   helmet()
+//   //   {
+//   //   crossOriginResourcePolicy: false,
+//   //   crossOriginEmbedderPolicy: false,
+//   // }
+// );
 
 app.use(
   fileUpload({

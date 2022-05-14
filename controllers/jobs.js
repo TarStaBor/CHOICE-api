@@ -5,6 +5,9 @@ const BadRequestError = require("../errors/bad-request-err");
 const NotFoundError = require("../errors/not-found-err");
 const errorMessages = require("../utils/error-messages");
 
+const { NODE_ENV, DOMAIN } = process.env;
+const devConfig = require("../utils/devConfig");
+
 // Вернуть все вакансии
 const getJobs = (req, res, next) => {
   Job.find({})
@@ -17,7 +20,9 @@ const createJob = (req, res, next) => {
   const { company, position, level, tags, note, todo, why } = req.body;
   const logoPath = req.files.logo;
   logoPath.mv(`./public/companyLogos/${logoPath.name}`);
-  const logo = `localhost:3000/companyLogos/${logoPath.name}`;
+  const logo = `${
+    NODE_ENV === "production" ? DOMAIN : devConfig.DEV_DOMAIN
+  }/companyLogos/${logoPath.name}`;
   Job.create({
     company,
     position,
