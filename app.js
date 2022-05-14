@@ -1,6 +1,9 @@
 // Dotenv анализирует файлы .env, чтобы сделать переменные окружения, хранящиеся в них, доступными
 require("dotenv").config({ path: "ENV_FILENAME" });
 
+// Импортируем CORS
+const cors = require("cors");
+
 // При получении запроса на бэкенде выполняются стандартные операции:
 // определяется тип этого запроса, извлекаются параметры и тело.
 // Затем вызывается функция-обработчик, которая соответствует запросу,
@@ -10,9 +13,6 @@ const express = require("express");
 
 // Мидлвэр для загрузки файлов
 const fileUpload = require("express-fileupload");
-
-// Импортируем CORS
-const cors = require("cors");
 
 // Автоматическое проставление заголовков безопасности
 const helmet = require("helmet");
@@ -51,6 +51,11 @@ const devConfig = require("./utils/devConfig");
 // Обработка допустимого количества запросов с одного IP
 const limiter = require("./middlewares/rateLimit");
 
+// Вытаскиваем из .env
+const { dbSrc, NODE_ENV } = process.env;
+
+const { PORT = 3000 } = process.env;
+
 // создаем приложение методом express
 const app = express();
 
@@ -69,11 +74,6 @@ app.use(
 );
 
 app.use(cors());
-
-// Вытаскиваем из .env
-const { dbSrc, NODE_ENV } = process.env;
-
-const { PORT = 3000 } = process.env;
 
 // для статики
 // Делаем папки companyLogos и resumes внутри папки public статичными.
