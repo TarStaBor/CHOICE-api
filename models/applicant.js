@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const { isURL } = require("validator");
-const errorMessages = require("../utils/error-messages");
+// const { isURL } = require("validator");
+// const errorMessages = require("../utils/error-messages");
 
 const applicantSchema = new mongoose.Schema(
   {

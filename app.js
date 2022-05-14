@@ -1,5 +1,5 @@
 // Dotenv анализирует файлы .env, чтобы сделать переменные окружения, хранящиеся в них, доступными
-require("dotenv").config({ path: "ENV_FILENAME" });
+require("dotenv").config();
 
 // Импортируем CORS
 const cors = require("cors");
@@ -52,20 +52,19 @@ const devConfig = require("./utils/devConfig");
 const limiter = require("./middlewares/rateLimit");
 
 // Вытаскиваем из .env
-const { dbSrc, NODE_ENV } = process.env;
+// const { db, NODE_ENV } = process.env;
 
 const { PORT = 3000 } = process.env;
 
 // создаем приложение методом express
 const app = express();
 
-// app.use(
-//   helmet()
-//   //   {
-//   //   crossOriginResourcePolicy: false,
-//   //   crossOriginEmbedderPolicy: false,
-//   // }
-// );
+app.use(
+  helmet({
+    crossOriginResourcePolicy: false,
+    crossOriginEmbedderPolicy: false,
+  })
+);
 
 app.use(
   fileUpload({
@@ -95,9 +94,8 @@ app.use(bodyParser.json());
 // могут быть любых типов. При значении false, в свойства body могут попасть
 // только строки и массивы
 app.use(bodyParser.urlencoded({ extended: true }));
-
 // подключаемся к серверу mongo
-mongoose.connect(NODE_ENV === "production" ? dbSrc : devConfig.dbDev, {
+mongoose.connect(process.env.db, {
   useNewUrlParser: true,
   // Эти объекты опций должны быть что бы не возникло проблем с совместимостью,
   // но если их включить, проблемы возникают )
@@ -111,13 +109,11 @@ const options = {
   // ресурсов, но не всех. Например, с локального сервера и продакшн-сайта.
   // У любого запроса есть заголовок Origin (const { origin } = req.headers;).
   // Он содержит адрес, с которого идёт этот запрос.
-  // origin: [
-  //   "http://localhost:3005",
-  //   "http://choicejob.ru",
-  //   "https://choicejob.ru",
-
-  // ],
-  origin: "*",
+  origin: [
+    "http://localhost:3005",
+    "http://choicejob.ru",
+    "https://choicejob.ru",
+  ],
 
   // Разрешенные методы
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],

@@ -1,9 +1,9 @@
 const jwt = require("jsonwebtoken");
 const UnauthorizedError = require("../errors/unauthorized-err");
 const errorMessages = require("../utils/error-messages");
-const devConfig = require("../utils/devConfig");
+// const devConfig = require("../utils/devConfig");
 
-const { NODE_ENV, JWT_SECRET } = process.env;
+// const { NODE_ENV, JWT_SECRET } = process.env;
 module.exports = (req, res, next) => {
   // Достать авторизационный заголовок
   const { authorization } = req.headers;
@@ -18,10 +18,7 @@ module.exports = (req, res, next) => {
   // После извлечения токена из запроса убедиться,
   // что пользователь прислал именно тот токен, который был выдан ему ранее
   try {
-    payload = jwt.verify(
-      token,
-      NODE_ENV === "production" ? JWT_SECRET : devConfig.JWT_SECRET_DEV
-    );
+    payload = jwt.verify(token, process.env.JWT_SECRET);
   } catch (e) {
     throw new UnauthorizedError(errorMessages.AuthorizationError);
   }

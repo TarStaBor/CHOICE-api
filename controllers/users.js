@@ -10,7 +10,7 @@ const BadRequestError = require("../errors/bad-request-err");
 const ConflictError = require("../errors/conflict-err");
 const UnauthorizedError = require("../errors/unauthorized-err");
 const errorMessages = require("../utils/error-messages");
-const devConfig = require("../utils/devConfig");
+// const devConfig = require("../utils/devConfig");
 
 // Создать пользователя
 const createUser = (req, res, next) => {
@@ -38,15 +38,13 @@ const createUser = (req, res, next) => {
 
 // Авторизация
 const login = (req, res, next) => {
+  console.log(process.env.JWT_SECRET);
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const { NODE_ENV, JWT_SECRET } = process.env;
-      const token = jwt.sign(
-        { _id: user._id },
-        NODE_ENV === "production" ? JWT_SECRET : devConfig.JWT_SECRET_DEV,
-        { expiresIn: "7d" }
-      );
+      const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: "7d",
+      });
       res.send({ token });
     })
     .catch((err) => {
