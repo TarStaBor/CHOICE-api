@@ -113,7 +113,7 @@ const options = {
   // Он содержит адрес, с которого идёт этот запрос.
   origin: [
     "http://localhost:3005",
-    // "http://choicejob.ru",
+    "http://choicejob.ru",
     "https://choicejob.ru",
   ],
 

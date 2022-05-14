@@ -15,6 +15,7 @@ const getJobById = (req, res, next) => {
 // Создать отклик
 const createApplicant = (req, res, next) => {
   const { link, company, jobId } = req.body;
+
   let resume = "";
   if (req.files) {
     resume = req.files.resume.name;
@@ -49,6 +50,7 @@ const createApplicant = (req, res, next) => {
       res.send({ message: errorMessages.SuccessResponse });
     })
     .catch((err) => {
+      console.log(err.message);
       if (err.name === "ValidationError") {
         next(new BadRequestError(errorMessages.BadResponseRequestError));
       } else {

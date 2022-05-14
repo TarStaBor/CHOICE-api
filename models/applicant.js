@@ -7,10 +7,10 @@ const applicantSchema = new mongoose.Schema(
     // Ссылка на резюме
     link: {
       type: String,
-      validate: {
-        validator: (v) => isURL(v),
-        message: errorMessages.BadUrl,
-      },
+      // validate: {
+      //   validator: (v) => isURL(v),
+      //   message: errorMessages.BadUrl,
+      // },
     },
     // Файл резюме
     resume: {
