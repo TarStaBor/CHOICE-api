@@ -112,9 +112,8 @@ const options = {
   // Он содержит адрес, с которого идёт этот запрос.
   origin: [
     "http://localhost:3005",
-    // "http://film-explorer.nomoredomains.rocks",
-    // "https://film-explorer.nomoredomains.rocks",
-    // 'https://YOUR.github.io',
+    // "http://choicejob.ru",
+    "https://choicejob.ru",
   ],
 
   // Разрешенные методы
