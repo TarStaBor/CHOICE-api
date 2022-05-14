@@ -46,7 +46,7 @@ const allRouters = require("./routes/index");
 // Обработка ошибок, которые небыли перехвачены другими обработчиками
 const errorsMiddleware = require("./middlewares/errors");
 
-const devConfig = require("./utils/devConfig");
+// const devConfig = require("./utils/devConfig");
 
 // Обработка допустимого количества запросов с одного IP
 const limiter = require("./middlewares/rateLimit");
