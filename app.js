@@ -111,11 +111,13 @@ const options = {
   // ресурсов, но не всех. Например, с локального сервера и продакшн-сайта.
   // У любого запроса есть заголовок Origin (const { origin } = req.headers;).
   // Он содержит адрес, с которого идёт этот запрос.
-  origin: [
-    "http://localhost:3005",
-    "http://choicejob.ru",
-    "https://choicejob.ru",
-  ],
+  // origin: [
+  //   "http://localhost:3005",
+  //   "http://choicejob.ru",
+  //   "https://choicejob.ru",
+
+  // ],
+  origin: "*",
 
   // Разрешенные методы
   methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
