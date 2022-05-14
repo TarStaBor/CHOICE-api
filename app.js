@@ -56,8 +56,8 @@ const app = express();
 
 app.use(
   helmet({
-    crossOriginResourcePolicy: false,
-    crossOriginEmbedderPolicy: false,
+    // crossOriginResourcePolicy: false,
+    // crossOriginEmbedderPolicy: false,
   })
 );
 
