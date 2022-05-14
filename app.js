@@ -55,10 +55,11 @@ const limiter = require("./middlewares/rateLimit");
 const app = express();
 
 app.use(
-  helmet({
-    // crossOriginResourcePolicy: false,
-    // crossOriginEmbedderPolicy: false,
-  })
+  helmet()
+  // {
+  // crossOriginResourcePolicy: false,
+  // crossOriginEmbedderPolicy: false,
+  // }
 );
 
 app.use(
