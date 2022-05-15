@@ -3,6 +3,7 @@ const Job = require("../models/job");
 const BadRequestError = require("../errors/bad-request-err");
 const NotFoundError = require("../errors/not-found-err");
 const errorMessages = require("../utils/error-messages");
+const messages = require("../utils/messages");
 
 // Вернуть вакансию по Id
 const getJobById = (req, res, next) => {
@@ -47,7 +48,7 @@ const createApplicant = (req, res, next) => {
           console.log(err);
         });
 
-      res.send({ message: errorMessages.SuccessResponse });
+      res.send({ message: messages.SuccessResponse });
     })
     .catch((err) => {
       console.log(err.message);

@@ -4,6 +4,7 @@ const Job = require("../models/job");
 const NotFoundError = require("../errors/not-found-err");
 const BadRequestError = require("../errors/bad-request-err");
 const errorMessages = require("../utils/error-messages");
+const messages = require("../utils/messages");
 
 // Вернуть все отклики
 const getApplicants = (req, res, next) => {
@@ -64,7 +65,7 @@ const deleteApplicantById = (req, res, next) => {
 
       return applicant
         .remove()
-        .then(res.send({ message: errorMessages.SuccessApplicantDelete }));
+        .then(res.send({ message: messages.SuccessApplicantDelete }));
     })
     .catch((err) => {
       if (err.name === "CastError") {
@@ -88,7 +89,7 @@ const patchApplicantComment = (req, res, next) => {
   )
     .orFail(new NotFoundError(errorMessages.NotFoundApplicantError))
     .then(() => {
-      res.send({ comment });
+      res.send({ message: messages.SuccessCommentUpdate });
     })
     .catch((err) => {
       if (err.name === "CastError") {

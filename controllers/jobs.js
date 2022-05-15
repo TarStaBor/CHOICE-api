@@ -4,9 +4,7 @@ const Applicant = require("../models/applicant");
 const BadRequestError = require("../errors/bad-request-err");
 const NotFoundError = require("../errors/not-found-err");
 const errorMessages = require("../utils/error-messages");
-
-// const { NODE_ENV, DOMAIN } = process.env;
-// const devConfig = require("../utils/devConfig");
+const messages = require("../utils/messages");
 
 // Вернуть все вакансии
 const getJobs = (req, res, next) => {
@@ -70,7 +68,7 @@ const deleteJob = (req, res, next) => {
       fs.rmdirSync(path, { recursive: true });
       return job
         .remove()
-        .then(res.send({ message: errorMessages.SuccessJobDelete }));
+        .then(res.send({ message: messages.SuccessJobDelete }));
     })
     .catch((err) => {
       if (err.name === "CastError") {

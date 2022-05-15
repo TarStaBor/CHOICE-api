@@ -10,7 +10,6 @@ const BadRequestError = require("../errors/bad-request-err");
 const ConflictError = require("../errors/conflict-err");
 const UnauthorizedError = require("../errors/unauthorized-err");
 const errorMessages = require("../utils/error-messages");
-// const devConfig = require("../utils/devConfig");
 
 // Создать пользователя
 const createUser = (req, res, next) => {

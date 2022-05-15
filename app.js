@@ -8,7 +8,7 @@ const cors = require("cors");
 // определяется тип этого запроса, извлекаются параметры и тело.
 // Затем вызывается функция-обработчик, которая соответствует запросу,
 // и результат её выполнения возвращается клиенту.
-// Для их решения применяем фреймворк Express (router, middlewear, BodyParser)
+// Для их решения применяем фреймворк Express
 const express = require("express");
 
 // Мидлвэр для загрузки файлов
@@ -17,10 +17,9 @@ const fileUpload = require("express-fileupload");
 // Автоматическое проставление заголовков безопасности
 const helmet = require("helmet");
 
-// Чтобы подружить JS с документами, существуют специальные инструменты — ODM,
-// или Object Document Mapper (англ. «сопоставитель объектов и документов»).
-// У MongoDB он называется Mongoose и представляет собой мост между двумя мирами:
-// миром документов в базе данных имиром объектов JavaScript.
+// Чтобы связать JS с документами БД, существуют специальные инструменты —
+// Object Document Mapper (У MongoDB он называется Mongoose,
+// который осуществляет связь между документами в БД и объектами JS)
 const mongoose = require("mongoose");
 
 // Мидлвэр для обработки проверки joi.
@@ -46,13 +45,8 @@ const allRouters = require("./routes/index");
 // Обработка ошибок, которые небыли перехвачены другими обработчиками
 const errorsMiddleware = require("./middlewares/errors");
 
-// const devConfig = require("./utils/devConfig");
-
 // Обработка допустимого количества запросов с одного IP
 const limiter = require("./middlewares/rateLimit");
-
-// Вытаскиваем из .env
-// const { db, NODE_ENV } = process.env;
 
 const { PORT = 3000 } = process.env;
 
@@ -75,8 +69,6 @@ app.use(
 app.use(cors());
 
 // для статики
-// Делаем папки companyLogos и resumes внутри папки public статичными.
-// Возможно достаточно сделать публичной только папку public.
 app.use(
   "/companyLogos",
   express.static(path.join(__dirname, "/public/companyLogos"))
@@ -94,21 +86,13 @@ app.use(bodyParser.json());
 // могут быть любых типов. При значении false, в свойства body могут попасть
 // только строки и массивы
 app.use(bodyParser.urlencoded({ extended: true }));
+
 // подключаемся к серверу mongo
 mongoose.connect(process.env.db, {
   useNewUrlParser: true,
-  // Эти объекты опций должны быть что бы не возникло проблем с совместимостью,
-  // но если их включить, проблемы возникают )
-  // useCreateIndex: true,
-  // useFindAndModify: false,
 });
 
 const options = {
-  // В заголовок Access-Control-Allow-Origin можно записать либо один URL,
-  // либо сразу все. Иногда нужно разрешить кросс-доменные запросы с нескольких
-  // ресурсов, но не всех. Например, с локального сервера и продакшн-сайта.
-  // У любого запроса есть заголовок Origin (const { origin } = req.headers;).
-  // Он содержит адрес, с которого идёт этот запрос.
   origin: [
     "http://localhost:3005",
     "http://choicejob.ru",

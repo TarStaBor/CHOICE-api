@@ -1,4 +1,3 @@
-// router создаёт объект, на который мы повесим обработчики
 const router = require("express").Router();
 const { login, createUser } = require("../controllers/users");
 const usersRouter = require("./users");
@@ -30,10 +29,6 @@ router.post(
 
 // Получить отклик
 router.use("/response", response);
-
-// Так как мы добавили auth нужным роутам вторым параметрам,
-// устанавливать router.use(auth) нет необходимости
-// router.use(auth);
 
 // Пользователи
 router.use("/users", auth, usersRouter);
