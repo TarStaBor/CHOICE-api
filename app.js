@@ -85,7 +85,7 @@ app.use(bodyParser.json());
 // "extended: true" означает, что данные в полученном объекте body
 // могут быть любых типов. При значении false, в свойства body могут попасть
 // только строки и массивы
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
 
 // подключаемся к серверу mongo
 mongoose.connect(process.env.db, {
