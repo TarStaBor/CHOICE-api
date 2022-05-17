@@ -79,13 +79,19 @@ app.use("/resumes", express.static(path.join(__dirname, "/public/resumes")));
 app.use(morgan("dev"));
 
 // для собирания JSON-формата
-app.use(bodyParser.json());
+app.use(bodyParser.json({ limit: "10mb" }));
 
 // для приёма веб-страниц внутри POST-запроса.
 // "extended: true" означает, что данные в полученном объекте body
 // могут быть любых типов. При значении false, в свойства body могут попасть
 // только строки и массивы
-app.use(bodyParser.urlencoded({ limit: "10mb", extended: true }));
+app.use(
+  bodyParser.urlencoded({
+    // limit: "10mb",
+    // parameterLimit: 100000,
+    extended: true,
+  })
+);
 
 // подключаемся к серверу mongo
 mongoose.connect(process.env.db, {
