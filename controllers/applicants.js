@@ -44,9 +44,17 @@ const deleteApplicantById = (req, res, next) => {
     .populate("job", "company")
     .then((applicant) => {
       if (applicant.resume) {
-        // Удалить папку, содержащуюю документы по откликам на вакансию
-        const path = `./public/resumes/${applicant.job.company}/${applicant.job._id}/${id}`;
-        fs.rmdirSync(path, { recursive: true });
+        // Удалить файл по отклику
+        const path = `./public/resumes/${applicant.job.company}/${
+          applicant.job._id
+        }/${id}.${applicant.resume.split(".").pop()}`;
+        fs.unlink(path, (err) => {
+          if (err) {
+            console.log(err);
+          } else {
+            console.log("Файл удалён");
+          }
+        });
       }
 
       // Уменьшить счетчик количества откликов

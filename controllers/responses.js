@@ -28,8 +28,13 @@ const createApplicant = (req, res, next) => {
   })
     .then((data) => {
       if (data.resume) {
+        const extention = data.resume.split(".").pop();
+
+        // console.log(
+        //   `./public/resumes/${company}/${jobId}/${data._id}/${data.resume}`
+        // );
         req.files.resume.mv(
-          `./public/resumes/${company}/${jobId}/${data._id}/${data.resume}`
+          `./public/resumes/${company}/${jobId}/${data._id}.${extention}`
         );
       }
       // Увеличить счетчик количества откликов
