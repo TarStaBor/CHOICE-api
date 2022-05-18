@@ -97,7 +97,7 @@ const patchApplicantComment = (req, res, next) => {
   )
     .orFail(new NotFoundError(errorMessages.NotFoundApplicantError))
     .then(() => {
-      res.send({ message: messages.SuccessCommentUpdate });
+      res.send(comment);
     })
     .catch((err) => {
       if (err.name === "CastError") {
