@@ -14,11 +14,12 @@ const auth = require("../middlewares/auth");
 // } = require("../middlewares/validation");
 
 // Регистрация
-// router.post(
-//   "/signup",
-//   // createUserValidate,
-//   createUser
-// );
+
+router.post(
+  "/signup",
+  // createUserValidate,
+  createUser
+);
 
 // Авторизация
 router.post(

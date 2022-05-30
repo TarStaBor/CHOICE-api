@@ -10,6 +10,7 @@ const errorMessages = {
   BadRequestJobId: "Ошибка: Передан невалидный id вакансии",
   BadRequestApplicantId: "Ошибка: Передан невалидный id отклика",
   NotFoundUser: "Ошибка: Пользователь не найден",
+  RegistrationIsDisabled: "Ошибка: Регистрация отключена",
   NotFoundPage: "Ошибка: Ресурс не найден!!!",
   ServerError: "Ошибка: На сервере произошла ошибка",
   BadUrl: "Неправильный формат URL",
