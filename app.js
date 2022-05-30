@@ -87,8 +87,6 @@ app.use(bodyParser.json({ limit: "10mb" }));
 // только строки и массивы
 app.use(
   bodyParser.urlencoded({
-    // limit: "10mb",
-    // parameterLimit: 100000,
     extended: true,
   })
 );
@@ -144,5 +142,4 @@ app.use(errorsMiddleware);
 app.listen(PORT, () => {
   // eslint-disable-next-line no-console
   console.log(`App listening on port ${PORT}`);
-  console.log(PORT);
 });
