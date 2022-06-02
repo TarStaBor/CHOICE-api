@@ -4,24 +4,24 @@ const mongoose = require("mongoose");
 
 const applicantSchema = new mongoose.Schema(
   {
-    // Ссылка на резюме
     link: {
       type: String,
+      // TODO: Validate
       // validate: {
       //   validator: (v) => isURL(v),
       //   message: errorMessages.BadUrl,
       // },
     },
-    // Файл резюме
+
     resume: {
       type: String,
     },
-    // Комментарий об откликнувшемся пользователе
+
     comment: {
       type: String,
       default: "",
     },
-    // Вакансия, по которой отклик
+
     job: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "job",

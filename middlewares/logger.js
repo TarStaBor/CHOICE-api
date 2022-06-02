@@ -1,7 +1,3 @@
-// winston — модуль логирования.
-// Для winston существует специализированный модуль-обёртка express-winston,
-// который упрощает подключение логера к Express, после установки которого
-// мы получаем детальную информацию о работе сервиса.
 const winston = require("winston");
 const expressWinston = require("express-winston");
 

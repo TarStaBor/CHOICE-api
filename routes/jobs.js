@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-// Валидацию с помощью Joi доделать позже
+// TODO: Validation with Joi
 // const {
 //   createJobValidate,
 //   getJobsValidate,
@@ -8,21 +8,18 @@ const router = require("express").Router();
 
 const { getJobs, createJob, deleteJob } = require("../controllers/jobs");
 
-// Вернуть все вакансии
 router.get(
   "/",
   // getJobsValidate,
   getJobs
 );
 
-// Создать вакансию
 router.post(
   "/",
   // createJobValidate,
   createJob
 );
 
-// Удалить вакансию по Id
 router.delete("/:id", deleteJob);
 
 module.exports = router;

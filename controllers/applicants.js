@@ -6,11 +6,8 @@ const BadRequestError = require("../errors/bad-request-err");
 const errorMessages = require("../utils/error-messages");
 const messages = require("../utils/messages");
 
-// Вернуть все отклики
 const getApplicants = (req, res, next) => {
   Applicant.find({})
-    // в .job будет хранится название компании, по которой был отклик
-    // на случай если в верстке надо будет отобразить название компании
     .populate("job", "company")
     .then((applicants) => {
       res.send(applicants);
@@ -18,7 +15,6 @@ const getApplicants = (req, res, next) => {
     .catch(next);
 };
 
-// Получить отклики по Id вакансии
 const getApplicantsByJobId = (req, res, next) => {
   const { id } = req.params;
   Applicant.find({ job: id })
@@ -36,7 +32,6 @@ const getApplicantsByJobId = (req, res, next) => {
     });
 };
 
-// Удалить отклик по id
 const deleteApplicantById = (req, res, next) => {
   const { id } = req.params;
   Applicant.findById(id)
@@ -44,7 +39,6 @@ const deleteApplicantById = (req, res, next) => {
     .populate("job", "company")
     .then((applicant) => {
       if (applicant.resume) {
-        // Удалить файл по отклику
         const path = `./public/resumes/${applicant.job.company}/${
           applicant.job._id
         }/${id}.${applicant.resume.split(".").pop()}`;
@@ -57,7 +51,6 @@ const deleteApplicantById = (req, res, next) => {
         });
       }
 
-      // Уменьшить счетчик количества откликов
       Job.findByIdAndUpdate(
         applicant.job._id,
         { $inc: { applicants: -1 } },
@@ -84,7 +77,6 @@ const deleteApplicantById = (req, res, next) => {
     });
 };
 
-// Обновить комментарий к отклику
 const patchApplicantComment = (req, res, next) => {
   const { id } = req.params;
   const { comment } = req.body;

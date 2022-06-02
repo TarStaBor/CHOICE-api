@@ -1,6 +1,6 @@
 const rateLimit = require("express-rate-limit");
 
-// Не более 100 запросов с одного IP за 1 минуту
+// No more than 100 requests from one IP in 1 minute
 const limiter = rateLimit({
   windowMs: 60 * 1000,
   max: 100,

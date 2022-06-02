@@ -1,6 +1,6 @@
 const router = require("express").Router();
 
-// Валидацию с помощью Joi доделать позже
+// TODO: Validation with Joi
 // const { createMovieValidate, getMoviesValidate } = require('../middlewares/validation');
 
 const {
@@ -10,16 +10,9 @@ const {
   patchApplicantComment,
 } = require("../controllers/applicants");
 
-// вернуть все отклики
 router.get("/", getApplicants);
-
-// вернуть количество откликов по вакансии (Доделать)
 router.get("/:id", getApplicantsByJobId);
-
-// удалить отклик по ID
 router.delete("/:id", deleteApplicantById);
-
-// изменить комментарий отклика
 router.patch("/:id", patchApplicantComment);
 
 module.exports = router;

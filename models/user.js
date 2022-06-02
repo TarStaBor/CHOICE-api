@@ -5,7 +5,6 @@ const errorMessages = require("../utils/error-messages");
 
 const userSchema = new mongoose.Schema(
   {
-    // почта пользователя
     email: {
       type: String,
       required: true,
@@ -15,13 +14,13 @@ const userSchema = new mongoose.Schema(
         message: errorMessages.BadEmail,
       },
     },
-    // пароль пользователя
+
     password: {
       type: String,
       required: true,
       select: false,
     },
-    // имя пользователя
+
     name: {
       type: String,
       minlength: 2,
@@ -34,15 +33,12 @@ const userSchema = new mongoose.Schema(
 
 // eslint-disable-next-line func-names
 userSchema.statics.findUserByCredentials = function (email, password) {
-  // попытаемся найти пользователя по почте
-  // this — это модель User
   return this.findOne({ email })
     .select("+password")
     .then((user) => {
       if (!user) {
         return Promise.reject(new Error(errorMessages.BadEmailOrPassword));
       }
-      // сравниваем хеши
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
           return Promise.reject(new Error(errorMessages.BadEmailOrPassword));

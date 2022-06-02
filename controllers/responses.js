@@ -5,7 +5,6 @@ const NotFoundError = require("../errors/not-found-err");
 const errorMessages = require("../utils/error-messages");
 const messages = require("../utils/messages");
 
-// Вернуть вакансию по Id
 const getJobById = (req, res, next) => {
   Job.findById(req.params.id)
     .orFail(new NotFoundError(errorMessages.NotFoundError))
@@ -13,7 +12,6 @@ const getJobById = (req, res, next) => {
     .catch(next);
 };
 
-// Создать отклик
 const createApplicant = (req, res, next) => {
   const { link, company, jobId } = req.body;
 
@@ -29,15 +27,10 @@ const createApplicant = (req, res, next) => {
     .then((data) => {
       if (data.resume) {
         const extention = data.resume.split(".").pop();
-
-        // console.log(
-        //   `./public/resumes/${company}/${jobId}/${data._id}/${data.resume}`
-        // );
         req.files.resume.mv(
           `./public/resumes/${company}/${jobId}/${data._id}.${extention}`
         );
       }
-      // Увеличить счетчик количества откликов
       Job.findByIdAndUpdate(
         jobId,
         { $inc: { applicants: 1 } },

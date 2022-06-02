@@ -1,9 +1,9 @@
-# **Проект: CHOICE-api**
+# **Project: CHOICE-api**
 
-## IP адресс ➡️ 185.117.152.203
+## IP address ➡️ 185.5.251.34
 
-## [Ссылка на сервер ⬅️](https://api.choicejob.ru/)
+## [Link to the server ⬅️](https://api.choicejobs.ru/)
 
 ---
 
-![Иллюстрация к проекту](./DOCS/CHOICE-API%20image.png)
+![Illustration for the project](./DOCS/CHOICE-API%20image.png)

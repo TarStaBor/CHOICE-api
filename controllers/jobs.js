@@ -6,14 +6,12 @@ const NotFoundError = require("../errors/not-found-err");
 const errorMessages = require("../utils/error-messages");
 const messages = require("../utils/messages");
 
-// Вернуть все вакансии
 const getJobs = (req, res, next) => {
   Job.find({})
     .then((jobs) => res.send(jobs))
     .catch(next);
 };
 
-// Создать вакансию
 const createJob = (req, res, next) => {
   const { company, position, level, tags, note, todo, why } = req.body;
   const logoPath = req.files.logo;
@@ -48,13 +46,11 @@ const createJob = (req, res, next) => {
     });
 };
 
-// Удалить вакансию по id
 const deleteJob = (req, res, next) => {
   const { id } = req.params;
   Job.findById(id)
     .orFail(new NotFoundError(errorMessages.NotFoundJobError))
     .then((job) => {
-      // Удалить все отклики по данной вакансии
       Applicant.deleteMany({ job: id })
         .orFail(new NotFoundError(errorMessages.NotFoundJobError))
         .then((response) => {
@@ -64,7 +60,6 @@ const deleteJob = (req, res, next) => {
           console.log(err);
         });
       const path = `./public/resumes/${job.company}`;
-      // Удалить папку, содержащуюю документы по откликам на вакансию
       fs.rmdirSync(path, { recursive: true });
       return job
         .remove()

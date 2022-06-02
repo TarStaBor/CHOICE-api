@@ -1,9 +1,5 @@
-// Модуль для создания токенов
 const jwt = require("jsonwebtoken");
-
-// Модуль хеширования пароля
 const bcrypt = require("bcrypt");
-
 const User = require("../models/user");
 // const NotFoundError = require("../errors/not-found-err");
 const ForbiddenError = require("../errors/forbidden-err");
@@ -12,7 +8,6 @@ const ConflictError = require("../errors/conflict-err");
 const UnauthorizedError = require("../errors/unauthorized-err");
 const errorMessages = require("../utils/error-messages");
 
-// Создать пользователя
 const createUser = (req, res, next) => {
   if (!process.env.REGISTRATION) {
     throw new ForbiddenError(errorMessages.RegistrationIsDisabled);
@@ -39,7 +34,6 @@ const createUser = (req, res, next) => {
     });
 };
 
-// Авторизация
 const login = (req, res, next) => {
   const { email, password } = req.body;
   return User.findUserByCredentials(email, password)
@@ -54,7 +48,6 @@ const login = (req, res, next) => {
     });
 };
 
-// Вернуть информацию о пользователе (email и имя)
 const getUserMe = (req, res, next) => {
   User.findById(req.user._id)
     .then((user) => {
@@ -63,7 +56,7 @@ const getUserMe = (req, res, next) => {
     .catch(next);
 };
 
-// обновление профиля (Доделать позже)
+// TODO: patch User
 // const patchUser = (req, res, next) => {
 //  User.findByIdAndUpdate(
 //    req.user._id,
